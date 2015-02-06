@@ -11,21 +11,14 @@ module LruCache2
 
     def get(key)
       node = @hash[key]
-
-      if node != nil && node != @head
-        @head << node.next
-        node  << @head
-        @head = node
-        @tail = node.previous if @tail == node
-      end
-
+      _swap_head(node)
       node ? node.value : nil
     end
 
     def set(key, val)
       node = Node.new(key: key, value: val)
-      
-      _append_list(node)
+
+      @max_size == @hash.size ? _evict_extra(node) : _append_list(node)
 
       @hash[key] = node
     end
@@ -39,6 +32,22 @@ module LruCache2
         @head = node
         @tail = node
       end
+    end
+
+    def _swap_head(node)
+      if node != nil && node != @head
+        @head << node.next
+        node  << @head
+        @head = node
+        @tail = node.previous if @tail == node
+      end
+    end
+
+    # Evict the LRU node
+    def _evict_extra(node)
+      @hash.delete(@head.key)
+      @head = @head.next
+      @head.previous = nil
     end
   end
 end

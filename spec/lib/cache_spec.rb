@@ -55,12 +55,12 @@ module LruCache2
         expect(cache.tail.key).to      eq('key3')
       end
 
-      #it 'get a hit after reaching max size' do
-      #  3.times.each { |i| @cache.set(pairs["key#{i}"], pairs["key#{i}"]) }
+      it 'get a hit after reaching max size' do
+        3.times.each { |i| @cache.set(pairs["key#{i}"], pairs["key#{i}"]) }
 
-      #  expect(@cache.get(pairs['key2'])).to be(pairs['key2'])
-      #  expect(@cache.get(pairs['key1'])).to be_nil
-      #end
+        expect(@cache.get(pairs['key2'])).to be(pairs['key2'])
+        expect(@cache.get(pairs['key0'])).to be_nil
+      end
     end
 
     context '#_insert_head' do
