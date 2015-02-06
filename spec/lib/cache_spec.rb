@@ -63,7 +63,7 @@ module LruCache2
       end
     end
 
-    context '#_insert_head' do
+    context '#_append_list' do
       class DummyCache < Cache
         attr_accessor :head, :tail
 
