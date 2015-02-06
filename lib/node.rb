@@ -13,7 +13,7 @@ module LruCache2
 
     def <<(node)
       self.next     = node
-      node.previous = self
+      node.previous = self if node
     end
 
     # TODO: Can refactor with nicer syntax

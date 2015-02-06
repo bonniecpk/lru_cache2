@@ -14,19 +14,26 @@ module LruCache2
     end
 
     it 'get key' do
-      expect(Node.new(key: 'key', value: 'value').key).to eq('key')
+      expect(node.key).to eq(key)
     end
 
     it 'get value' do
-      expect(Node.new(key: 'key', value: 'value').value).to eq('value')
+      expect(node.value).to eq(value)
     end
 
     it 'get next and previous' do
-      node1 = Node.new(key: 'key1', value: 'value1')
+      node1 = node
       node2 = Node.new(key: 'key', value: 'value', previous: node1, next: node1)
 
       expect(node2.previous).to be(node1)
       expect(node2.next).to     be(node1)
+    end
+
+    context '#<<' do
+      it 'nil' do
+        node << nil
+        expect(node.previous).to be_nil
+      end
     end
 
     context 'one node' do

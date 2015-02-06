@@ -23,19 +23,19 @@ module LruCache2
         expect(@cache.get(key)).to be_nil
       end
 
-      it 'get a hit from 1-element cache' do
+      it 'get a hit from size-1 cache' do
         @cache.set(key, value)
         expect(@cache.get(key)).to be(value)
       end
 
-      it 'get a hit of 2nd inserted key from 2-element cache' do
+      it 'get a hit of 2nd inserted key from size-2 cache' do
         2.times.each { |i| @cache.set("key#{i}", pairs["key#{i}"]) }
 
         expect(@cache.get('key1')).to   be(pairs['key1'])
         expect(@cache.head.key).to      eq('key1')
       end
 
-      it 'get a hit of 2nd inserted key from multiple element cache' do
+      it 'get a hit of 2nd inserted key from size-10 cache' do
         cache = Cache.new
         5.times.each { |i| cache.set("key#{i}", pairs["key#{i}"]) }
 
@@ -45,7 +45,7 @@ module LruCache2
         expect(cache.tail.key).to      eq('key4')
       end
 
-      it 'get a hit of last inserted key from multiple element cache' do
+      it 'get a hit of last inserted key from size-10 cache' do
         cache = Cache.new
         5.times.each { |i| cache.set("key#{i}", pairs["key#{i}"]) }
 
@@ -55,17 +55,11 @@ module LruCache2
         expect(cache.tail.key).to      eq('key3')
       end
 
-      #it 'get a hit after kicking one key out' do
+      #it 'get a hit after reaching max size' do
       #  3.times.each { |i| @cache.set(pairs["key#{i}"], pairs["key#{i}"]) }
 
       #  expect(@cache.get(pairs['key2'])).to be(pairs['key2'])
       #  expect(@cache.get(pairs['key1'])).to be_nil
-      #end
-    end
-
-    context '#set' do
-      #it 'one pair in 1-element cache' do
-
       #end
     end
 

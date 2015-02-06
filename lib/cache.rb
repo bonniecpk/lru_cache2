@@ -11,12 +11,12 @@ module LruCache2
 
     def get(key)
       node = @hash[key]
-      
-      if node != @head
-        @head.next = node.next
-        @tail      = node.previous if @tail == node
-        node.next  = @head
-        @head      = node
+
+      if node != nil && node != @head
+        @head << node.next
+        node  << @head
+        @head = node
+        @tail = node.previous if @tail == node
       end
 
       node ? node.value : nil
