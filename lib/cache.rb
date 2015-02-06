@@ -33,14 +33,12 @@ module LruCache2
     protected
     def _append_list(node)
       if @head
-        @tail.previous.next = node
-        node.previous       = @tail
-        @tail               = node
+        @tail << node
+        @tail = node
       else
         @head = node
         @tail = node
       end
-      binding.pry
     end
   end
 end

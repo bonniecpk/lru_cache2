@@ -40,10 +40,10 @@ module LruCache2
         expect(nodes[1].next).to     be_nil
       end
 
-      it '#to_s' do
+      it '#to_a' do
         node = Node.new(key: key, value: value)
 
-        expect(node.to_s).to eq([{key => value}].to_s)
+        expect(node.to_a).to eq([{key => value}].to_a)
       end
     end
 
@@ -65,9 +65,9 @@ module LruCache2
         end
       end
 
-      it '#to_s' do
-        output = @nodes.collect { |n| { n.key => n.value } }.to_s
-        expect(@nodes[0].to_s).to eq(output)
+      it '#to_a' do
+        output = @nodes.collect { |n| { n.key => n.value } }.to_a
+        expect(@nodes[0].to_a).to eq(output)
       end
     end
   end

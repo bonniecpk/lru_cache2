@@ -16,8 +16,15 @@ module LruCache2
       node.previous = self
     end
 
-    def to_s
-      [{@key => @value}].to_s
+    # TODO: Can refactor with nicer syntax
+    def to_a
+      pairs = []
+      node  = self
+      while node != nil
+        pairs << { node.key => node.value }
+        node = node.next
+      end
+      pairs
     end
   end
 end
