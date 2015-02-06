@@ -5,6 +5,7 @@ module LruCache2
     let(:pairs) { Hash[5.times.collect{ |i| ["key#{i}", "value#{i}"] }] }
     let(:key)   { 'random_key' }
     let(:value) { 'random_value' }
+    let(:node)  { Node.new(key: key, value: value) }
 
     context '#initialize' do
       it 'without params' do
@@ -41,9 +42,11 @@ module LruCache2
       end
 
       it '#to_a' do
-        node = Node.new(key: key, value: value)
-
         expect(node.to_a).to eq([{key => value}].to_a)
+      end
+
+      it '#to_pretty_s' do
+        expect(node.to_pretty_s).to eq("{@key: #{node.key}, @value: #{node.value}, @previous: nil, @next: nil}")
       end
     end
 
@@ -68,6 +71,11 @@ module LruCache2
       it '#to_a' do
         output = @nodes.collect { |n| { n.key => n.value } }.to_a
         expect(@nodes[0].to_a).to eq(output)
+      end
+
+      it '#to_pretty_s' do
+        output = "{@key: key0, @value: value0, @previous: nil, @next: key1}, {@key: key1, @value: value1, @previous: key0, @next: key2}, {@key: key2, @value: value2, @previous: key1, @next: key3}, {@key: key3, @value: value3, @previous: key2, @next: key4}, {@key: key4, @value: value4, @previous: key3, @next: nil}"
+        expect(@nodes[0].to_pretty_s).to eq(output)
       end
     end
   end

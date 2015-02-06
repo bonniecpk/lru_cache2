@@ -26,5 +26,22 @@ module LruCache2
       end
       pairs
     end
+
+    def to_pretty_s
+      array    = instance_variables.collect { |key| "#{key}: #{_attr_value(key)}" }
+      self_str = '{' + array.join(', ') + '}'
+      self.next ? (self_str + ', ' + self.next.to_pretty_s) : self_str
+    end
+
+    def to_s
+      key
+    end
+
+    protected
+    def _attr_value(key)
+      value   = instance_variable_get(key)
+      value ||= 'nil'
+      value
+    end
   end
 end
