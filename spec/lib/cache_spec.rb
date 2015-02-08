@@ -55,18 +55,63 @@ module LruCache2
         expect(cache.tail.key).to      eq('key3')
       end
 
-      it 'get a hit after reaching max size' do
-        3.times.each { |i| @cache.set(pairs["key#{i}"], pairs["key#{i}"]) }
+      it 'get a hit and a miss after reaching max size' do
+        3.times.each { |i| @cache.set("key#{i}", pairs["key#{i}"]) }
 
-        expect(@cache.get(pairs['key2'])).to be(pairs['key2'])
+        expect(@cache.get('key2')).to        be(pairs['key2'])
         expect(@cache.get(pairs['key0'])).to be_nil
+
+        expect(@cache.head.key).to           eq('key2')
+        expect(@cache.head.next.key).to      eq('key1')
+      end
+    end
+
+    context '#_swap_head' do
+      class DummyCache < Cache
+        def swap_head(node)
+          _swap_head(node)
+        end
+      end
+
+      let(:node) { Node.new(key: key, value: value) }
+
+      before(:each) do
+        @cache = DummyCache.new
+      end
+
+      it 'empty list' do
+        expect(@cache.swap_head(node)).to be_nil
+      end
+
+      it 'one node' do
+        2.times.each { |i| @cache.set("key#{i}", pairs["key#{i}"]) }
+        expect(@cache.swap_head(@cache.tail).key).to eq('key1')
+      end
+
+      it 'multiple nodes; swap head' do
+        5.times.each { |i| @cache.set("key#{i}", pairs["key#{i}"]) }
+        expect(@cache.swap_head(@cache.head).key).to eq('key0')
+        expect(@cache.head.next.key).to              eq('key1')
+        expect(@cache.tail.key).to                   eq('key4')
+      end
+
+      it 'multiple nodes; swap middle' do
+        5.times.each { |i| @cache.set("key#{i}", pairs["key#{i}"]) }
+        expect(@cache.swap_head(@cache.head.next.next).key).to eq('key2')
+        expect(@cache.head.next.key).to                        eq('key0')
+        expect(@cache.tail.key).to                             eq('key4')
+      end
+
+      it 'multiple nodes; swap tail' do
+        5.times.each { |i| @cache.set("key#{i}", pairs["key#{i}"]) }
+        expect(@cache.swap_head(@cache.tail).key).to eq('key4')
+        expect(@cache.head.next.key).to              eq('key0')
+        expect(@cache.tail.key).to                   eq('key3')
       end
     end
 
     context '#_append_list' do
       class DummyCache < Cache
-        attr_accessor :head, :tail
-
         def append_list(node)
           _append_list(node)
         end

@@ -34,16 +34,19 @@ module LruCache2
       end
     end
 
+    # Move 'node' to the head of the linked list
     def _swap_head(node)
-      if node != nil && node != @head
+      if @head != nil && node != nil && node != @head
         @head << node.next
         node  << @head
         @head = node
         @tail = node.previous if @tail == node
       end
+
+      @head
     end
 
-    # Evict the LRU node
+    # Evict the LRU node from the list and the hashtable
     def _evict_extra(node)
       @hash.delete(@head.key)
       @head = @head.next
